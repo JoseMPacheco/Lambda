@@ -36,16 +36,16 @@
             this.dpdesde = new System.Windows.Forms.DateTimePicker();
             this.cbTipo = new System.Windows.Forms.ComboBox();
             this.lvMain = new System.Windows.Forms.ListView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.btnGenerar = new System.Windows.Forms.Button();
+            this.pcBuscar = new System.Windows.Forms.PictureBox();
+            this.pcAgregar = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnCargo = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBuscar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcAgregar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -101,28 +101,28 @@
             this.lvMain.UseCompatibleStateImageBehavior = false;
             this.lvMain.SelectedIndexChanged += new System.EventHandler(this.lvMain_SelectedIndexChanged);
             // 
-            // button1
+            // btnGenerar
             // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            resources.ApplyResources(this.btnGenerar, "btnGenerar");
+            this.btnGenerar.Name = "btnGenerar";
+            this.btnGenerar.UseVisualStyleBackColor = true;
+            this.btnGenerar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // pictureBox4
+            // pcBuscar
             // 
-            resources.ApplyResources(this.pictureBox4, "pictureBox4");
-            this.pictureBox4.Image = global::Lambda.Properties.Resources.busqueda_removebg_preview__1_;
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.TabStop = false;
-            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            resources.ApplyResources(this.pcBuscar, "pcBuscar");
+            this.pcBuscar.Image = global::Lambda.Properties.Resources.busqueda_removebg_preview__1_;
+            this.pcBuscar.Name = "pcBuscar";
+            this.pcBuscar.TabStop = false;
+            this.pcBuscar.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
-            // pictureBox3
+            // pcAgregar
             // 
-            resources.ApplyResources(this.pictureBox3, "pictureBox3");
-            this.pictureBox3.Image = global::Lambda.Properties.Resources.mas__1_;
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            resources.ApplyResources(this.pcAgregar, "pcAgregar");
+            this.pcAgregar.Image = global::Lambda.Properties.Resources.mas__1_;
+            this.pcAgregar.Name = "pcAgregar";
+            this.pcAgregar.TabStop = false;
+            this.pcAgregar.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // pictureBox2
             // 
@@ -133,35 +133,41 @@
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // pictureBox1
+            // btnCargo
             // 
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Image = global::Lambda.Properties.Resources.mas__1_;
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            resources.ApplyResources(this.btnCargo, "btnCargo");
+            this.btnCargo.Name = "btnCargo";
+            this.btnCargo.UseVisualStyleBackColor = true;
+            this.btnCargo.Click += new System.EventHandler(this.btnCargo_Click);
+            // 
+            // btnCancelar
+            // 
+            resources.ApplyResources(this.btnCancelar, "btnCancelar");
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // Main
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Controls.Add(this.pictureBox4);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.pcBuscar);
+            this.Controls.Add(this.btnGenerar);
+            this.Controls.Add(this.pcAgregar);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lvMain);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btnCargo);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(39)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBuscar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcAgregar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -169,7 +175,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ListView lvMain;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ComboBox cbTipo;
@@ -177,9 +182,11 @@
         private System.Windows.Forms.DateTimePicker dphasta;
         private System.Windows.Forms.Label lbhasta;
         private System.Windows.Forms.Label lbdesde;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pcAgregar;
+        private System.Windows.Forms.Button btnGenerar;
+        private System.Windows.Forms.PictureBox pcBuscar;
+        private System.Windows.Forms.Button btnCargo;
+        private System.Windows.Forms.Button btnCancelar;
     }
 }
 

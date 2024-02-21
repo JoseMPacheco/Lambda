@@ -62,6 +62,66 @@ namespace Lambda.Controlador
             }
 
         }
+
+        public void llenarListItemsCargo(ListView listView)
+        {
+            string consulta = @"select NUMEROD, CODITEM,p.descrip,  NROLOTE, cast(cast(CANTIDAD as int) as varchar) , 
+CASE WHEN ESUNID=1 THEN P.UndEmpaq WHEN ESUNID=0 THEN P.Unidad END AS 'ESUNID' from saaxes2 S
+INNER JOIN SAPROD P ON S.CODITEM=P.CodProd";
+            try
+            {
+                using (SqlConnection connection = op.GetSQLConnection())
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(consulta, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    listView.Clear();
+                    listView.View = View.Details;
+                    listView.GridLines = true;
+                    listView.FullRowSelect = true;
+
+                    // Agregar columnas al ListView
+                    listView.Columns.Add("Nro. Documento", 100);
+                    listView.Columns.Add("Codigó", 100);
+                    listView.Columns.Add("Descripción", 200);
+                    listView.Columns.Add("Nro. Lote", 100);
+                    listView.Columns.Add("Cantidad", 75);
+                    listView.Columns.Add("Tipo de Unid", 70);
+
+
+                    while (reader.Read())
+                    {
+                        string[] row = new string[6];
+                        ListViewItem item;
+
+
+                        row[0] = reader.GetString(0);
+                        row[1] = reader.GetString(1);
+                        row[2] = reader.GetString(2);
+                        row[3] = reader.GetString(3);
+                        row[4] = reader.GetString(4);
+                        row[5] = reader.GetString(5);
+         
+
+
+
+
+                        item = new ListViewItem(row);
+
+                        listView.Items.Add(item);
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+
+        }
         public void llenarListProducto(ListView listView)
         {
             string consulta = @" SELECT CodProd,Descrip, Descrip2, Descrip3,Refere, cast(CodInst as varchar),Unidad,UndEmpaq, cast(CantEmpaq as varchar),

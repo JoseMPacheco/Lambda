@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using Lambda.Consulta;
 using Lambda.Controlador;
-using Lambda.Modelo;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace Lambda
 {
@@ -24,6 +15,7 @@ namespace Lambda
         Encriptador encriptador = new Encriptador();
         JsonControlador json = new JsonControlador();
         Vistas v = new Vistas();
+        SqlComand comaandos = new SqlComand();
         public Main()
         {
             InitializeComponent();
@@ -34,8 +26,10 @@ namespace Lambda
             listaOpciones.Add("Reportes");
 
             cbTipo.DataSource = listaOpciones;
-           
+            btnCargo.Visible = false;
+            btnCancelar.Visible = false;
 
+            comaandos.LimpiarData();
 
         }
 
@@ -44,7 +38,7 @@ namespace Lambda
             if (lvMain.SelectedItems.Count > 0)
             {
                 numerod = lvMain.SelectedItems[0].SubItems[0].Text;
-             
+
             }
         }
 
@@ -53,15 +47,8 @@ namespace Lambda
             Close();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            //encriptador.EncriptarTexto("hola", "C:\\pnp\\hola.txt", "hphphphp");
-            string jsonText = json.GetFacturasAsJson("00000019");
-
-           // encriptador.EncriptarTexto(jsonText, "C:\\lambda\\hola.txt", "hphphphp");
-            json.SaveJsonToFile(jsonText, "factura.json");
-        }
-
+  
+ 
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
@@ -74,40 +61,31 @@ namespace Lambda
                     lbhasta.Visible = true;
                     dpdesde.Visible = true;
                     dphasta.Visible = true;
-                    //v.LlenarListView(lvMain, dpdesde.Text, dphasta.Text);
-                    string hola = json.ObtenerContenidoArchivoZIP("ne.json");
-                    string chola = encriptador.DesencriptarTexto(hola, "hphphphp");
-
-                    MessageBox.Show(chola);
+                    btnCargo.Visible = true;
+                    btnCancelar.Visible = true;
+                    btnGenerar.Visible = false;
+                    pcBuscar.Visible = false;
+                  
+                    string textoencriptado = json.ObtenerContenidoArchivoZIP("ne.json");
+                    json.InsertJsonToSqlTableFac(textoencriptado);
+                    v.llenarListItemsCargo(lvMain);
                     break;
                 case "Productos":
                     lbdesde.Visible = false;
                     lbhasta.Visible = false;
                     dpdesde.Visible = false;
                     dphasta.Visible = false;
-                    //v.llenarListProducto(lvMain);
-                     hola = json.ObtenerContenidoArchivoZIP("in.json");
-                  chola = encriptador.DesencriptarTexto(hola,"hphphphp");
-                    
-                    //MessageBox.Show(chola);
+                    textoencriptado = json.ObtenerContenidoArchivoZIP("in.json");            
+                    json.InsertJsonToSqlTable(textoencriptado);
+                    comaandos.updateProductos();
                     break;
                 case "Reportes":
                     lbdesde.Visible = false;
                     lbhasta.Visible = false;
                     dpdesde.Visible = false;
                     dphasta.Visible = false;
-                   // v.llenarListReporte(lvMain);
                     break;
             }
-
-
-            /*
-            string textContent = File.ReadAllText("C:\\lambda\\factura.json");
-            MessageBox.Show(encriptador.DesencriptarTexto(textContent, "hphphphp"));
-            if (dpdesde.Visible == true || dphasta.Visible == true)
-            {
-                v.LlenarListView(lvMain, dpdesde.Text, dphasta.Text);
-            }*/
         }
 
         private void cargarListView()
@@ -192,7 +170,72 @@ namespace Lambda
             cargarListView();
         }
 
-   
+        private void btnCargo_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                     "¿Esta seguro que quiero continuar la transacción? " +
+                     "es un proceso IRREVERSIBLE",
+                     "Confirmación",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Question,
+                     MessageBoxDefaultButton.Button2 
+            );
 
+            if (result == DialogResult.Yes)
+            {
+                DialogResult result2 = MessageBox.Show(
+                     "Confirme que esta Totalmente deacuerdo que contnue la transacción" +
+                     "es un proceso IRREVERSIBLE",
+                     "Confirmación",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Question,
+                     MessageBoxDefaultButton.Button2);
+                if (result2 == DialogResult.Yes)
+                {
+                    comaandos.updateCargo();
+                    comaandos.LimpiarData();
+                }
+                else
+                {
+                  
+                }
+            }
+            else
+            {
+               
+            }
+        }
+        private void Vista()
+        {
+            btnCancelar.Visible = false;
+            btnCargo.Visible = false;
+            btnGenerar.Visible = true;
+            pcBuscar.Visible = true;
+            cbTipo.Visible = true;
+           
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                     "¿Cancelar Transacción?",
+                     "Confirmación",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Question,
+                     MessageBoxDefaultButton.Button2 
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                comaandos.LimpiarData();
+                Vista();
+               
+            }
+            else
+            {
+                
+            }
+
+        }
     }
 }

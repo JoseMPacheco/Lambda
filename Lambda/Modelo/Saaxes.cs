@@ -25,5 +25,9 @@ namespace Lambda.Modelo
         public decimal PrecioIU1 { get; set; }
         public decimal PrecioIU2 { get; set; }
         public decimal PrecioIU3 { get; set; }
+
+        public int esExento { get; set; }
+
+        public decimal Costo { get; set; }
     }
 }

@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consulta\SQL.cs" />
+    <Compile Include="Consulta\SqlComand.cs" />
     <Compile Include="Controlador\ConexionBd.cs" />
     <Compile Include="Controlador\Encriptador.cs" />
     <Compile Include="Controlador\JsonControlador.cs" />

@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.IO.Compression;
 using System.Windows.Forms;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace Lambda.Controlador
 {
@@ -167,8 +168,8 @@ namespace Lambda.Controlador
             using (SqlConnection connection = conn.GetSQLConnection())
             {
                 string query = @"SELECT CodProd, Descrip, Descrip2, Descrip3, Refere, CodInst, Unidad, UndEmpaq, CantEmpaq, 
-                        EsEmpaque, DEsLote, PrecioI1, PrecioI2, PrecioI3, PrecioIU1, PrecioIU2, PrecioIU3 
-                        FROM SAPROD";
+                        EsEmpaque, DEsLote, PrecioI1, PrecioI2, PrecioI3, PrecioIU1, PrecioIU2, PrecioIU3 , ESEXENTO, CostAct
+                        FROM SAPROD ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -196,7 +197,9 @@ namespace Lambda.Controlador
                                 PrecioI3 = Convert.ToDecimal(reader["PrecioI3"]),
                                 PrecioIU1 = Convert.ToDecimal(reader["PrecioIU1"]),
                                 PrecioIU2 = Convert.ToDecimal(reader["PrecioIU2"]),
-                                PrecioIU3 = Convert.ToDecimal(reader["PrecioIU3"])
+                                PrecioIU3 = Convert.ToDecimal(reader["PrecioIU3"]),
+                                Costo = Convert.ToDecimal(reader["CostAct"]),
+                                esExento = Convert.ToInt32(reader["ESEXENTO"]),
                             };
                             productos.Add(producto);
                         }
@@ -209,15 +212,13 @@ namespace Lambda.Controlador
         }
 
         //lee un archivo encriptado y devuelve el string desencriptado
-        public string ReadFileAndConvertToJSON(string filePath)
+        public string ReadFileAndConvertToJSON(string textContent)
         {
             try
             {
-                string textContent = File.ReadAllText(filePath);
-                string text = encriptador.DesencriptarTexto(textContent, "hphphphp");
-
-                dynamic json = JsonConvert.DeserializeObject(text);
-
+                string texto = encriptador.DesencriptarTexto(textContent, "hphphphp");
+                string t = texto;
+                dynamic json = JsonConvert.DeserializeObject(texto);
 
                 return JsonConvert.SerializeObject(json, Formatting.Indented);
             }
@@ -231,8 +232,9 @@ namespace Lambda.Controlador
         //insert en tabla de actualizacion de productos
         public void InsertJsonToSqlTable(string path)
         {
-
+            try { 
             string json = ReadFileAndConvertToJSON(path);
+            Console.Write(json);
             List<SAAXES> saaxesList = JsonConvert.DeserializeObject<List<SAAXES>>(json);
 
             using (SqlConnection connection = conn.GetSQLConnection())
@@ -241,8 +243,8 @@ namespace Lambda.Controlador
 
                 foreach (var saaxes in saaxesList)
                 {
-                    string insertQuery = "INSERT INTO SAAXES (CodProd, Descrip, Descrip2, Descrip3, Refere, CodInst, Unidad, UndEmpaq, CantEmpaq, EsEmpaque, DEsLote, PrecioI1, PrecioI2, PrecioI3, PrecioIU1, PrecioIU2, PrecioIU3) " +
-                                         "VALUES (@CodProd, @Descrip, @Descrip2, @Descrip3, @Refere, @CodInst, @Unidad, @UndEmpaq, @CantEmpaq, @EsEmpaque, @DEsLote, @PrecioI1, @PrecioI2, @PrecioI3, @PrecioIU1, @PrecioIU2, @PrecioIU3)";
+                    string insertQuery = "INSERT INTO SAAXES (CodProd, Descrip, Descrip2, Descrip3, Refere, CodInst, Unidad, UndEmpaq, CantEmpaq, EsEmpaque, DEsLote, PrecioI1, PrecioI2, PrecioI3, PrecioIU1, PrecioIU2, PrecioIU3, EXENTO,COSTO) " +
+                                         "VALUES (@CodProd, @Descrip, @Descrip2, @Descrip3, @Refere, @CodInst, @Unidad, @UndEmpaq, @CantEmpaq, @EsEmpaque, @DEsLote, @PrecioI1, @PrecioI2, @PrecioI3, @PrecioIU1, @PrecioIU2, @PrecioIU3, @EXENTO,@COSTO)";
                     SqlCommand command = new SqlCommand(insertQuery, connection);
                     command.Parameters.AddWithValue("@CodProd", saaxes.CodProd);
                     command.Parameters.AddWithValue("@Descrip", saaxes.Descrip);
@@ -261,28 +263,36 @@ namespace Lambda.Controlador
                     command.Parameters.AddWithValue("@PrecioIU1", saaxes.PrecioIU1);
                     command.Parameters.AddWithValue("@PrecioIU2", saaxes.PrecioIU2);
                     command.Parameters.AddWithValue("@PrecioIU3", saaxes.PrecioIU3);
+                    command.Parameters.AddWithValue("@COSTO", saaxes.Costo);
+                    command.Parameters.AddWithValue("@EXENTO", saaxes.esExento);
 
                     command.ExecuteNonQuery();
                 }
 
                 Console.WriteLine("Los datos del archivo JSON han sido insertados en la tabla de SQL");
             }
+            }
+            catch(Exception e)
+            { MessageBox.Show("Archivo no valido"); }
+
         }
     
         //inserta en tabla de cargo
     public void InsertJsonToSqlTableFac(string path)
     {
-
-        string json = ReadFileAndConvertToJSON(path);
-        List<SAAXES2> saaxesList = JsonConvert.DeserializeObject<List<SAAXES2>>(json);
-
-        using (SqlConnection connection = conn.GetSQLConnection())
-        {
-            connection.Open();
-
-            foreach (var saaxes2 in saaxesList)
+            try
             {
-                string insertQuery = @"INSERT INTO [dbo].[SAAXES2]
+
+                string json = ReadFileAndConvertToJSON(path);
+                List<SAAXES2> saaxesList = JsonConvert.DeserializeObject<List<SAAXES2>>(json);
+
+                using (SqlConnection connection = conn.GetSQLConnection())
+                {
+                    connection.Open();
+
+                    foreach (var saaxes2 in saaxesList)
+                    {
+                        string insertQuery = @"INSERT INTO [dbo].[SAAXES2]
            ([NUMEROD]
            ,[CODITEM]
            ,[NROLOTE]
@@ -290,22 +300,27 @@ namespace Lambda.Controlador
            ,[ESUNID]
            ,[COSTO]
            ,[PRECIO]) VALUES (@numerod, @coditem,@nrolote, @cantidad,@esunid, @costo, @precio)";
-                SqlCommand command = new SqlCommand(insertQuery, connection);
-                command.Parameters.AddWithValue("@numerod", saaxes2.NUMEROD);
-                command.Parameters.AddWithValue("@coditem", saaxes2.CODITEM);
-                command.Parameters.AddWithValue("@nrolote", saaxes2.NROLOTE);
-                command.Parameters.AddWithValue("@cantidad", saaxes2.CANTIDAD);
-                command.Parameters.AddWithValue("@esunid", saaxes2.ESUNID);
-                command.Parameters.AddWithValue("@costo", saaxes2.COSTO);
-                command.Parameters.AddWithValue("@precio", saaxes2.PRECIO);
-               
-    
+                        SqlCommand command = new SqlCommand(insertQuery, connection);
+                        command.Parameters.AddWithValue("@numerod", saaxes2.NUMEROD);
+                        command.Parameters.AddWithValue("@coditem", saaxes2.CODITEM);
+                        command.Parameters.AddWithValue("@nrolote", saaxes2.NROLOTE);
+                        command.Parameters.AddWithValue("@cantidad", saaxes2.CANTIDAD);
+                        command.Parameters.AddWithValue("@esunid", saaxes2.ESUNID);
+                        command.Parameters.AddWithValue("@costo", saaxes2.COSTO);
+                        command.Parameters.AddWithValue("@precio", saaxes2.PRECIO);
 
-                command.ExecuteNonQuery();
+
+
+                        command.ExecuteNonQuery();
+                    }
+
+                    Console.WriteLine("Los datos del archivo JSON han sido insertados en la tabla de SQL");
+                }
             }
-
-            Console.WriteLine("Los datos del archivo JSON han sido insertados en la tabla de SQL");
-        }
+            catch (Exception e)
+            {
+                MessageBox.Show("Archivo no valido");
+            }
     }
 }
 

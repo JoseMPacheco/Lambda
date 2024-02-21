@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,9 +27,12 @@ namespace Lambda.Modelo
         public decimal PrecioIU2 { get; set; }
         public decimal PrecioIU3 { get; set; }
 
+        public int esExento { get; set; }
+
+        public decimal Costo { get; set; }
         public Producto() { }
 
-        public Producto(string codProd, string descrip, string descrip2, string descrip3, string refere, int codInst, string unidad, string undEmpaq, decimal cantEmpaq, int esEmpaque, int dEsLote, decimal precioI1, decimal precioI2, decimal precioI3, decimal precioIU1, decimal precioIU2, decimal precioIU3)
+        public Producto(string codProd, string descrip, string descrip2, string descrip3, string refere, int codInst, string unidad, string undEmpaq, decimal cantEmpaq, int esEmpaque, int dEsLote, decimal precioI1, decimal precioI2, decimal precioI3, decimal precioIU1, decimal precioIU2, decimal precioIU3, int esexento, decimal costo)
         {
             CodProd = codProd;
             Descrip = descrip;
@@ -47,6 +51,8 @@ namespace Lambda.Modelo
             PrecioIU1 = precioIU1;
             PrecioIU2 = precioIU2;
             PrecioIU3 = precioIU3;
+            esExento = esexento;
+            Costo = costo;
         }
     }
 }
