@@ -124,12 +124,12 @@ INNER JOIN SAPROD P ON S.CODITEM=P.CodProd";
         }
         public void llenarListProducto(ListView listView)
         {
-            string consulta = @" SELECT CodProd,Descrip, Descrip2, Descrip3,Refere, cast(CodInst as varchar),Unidad,UndEmpaq, cast(CantEmpaq as varchar),
+            string consulta = @" SELECT CodProd,Descrip, isnull(Descrip2,''), isnull(Descrip3,''),isnull(Refere, ''), cast(CodInst as varchar),isnull(Unidad,''),isnull(UndEmpaq, ''), cast(CantEmpaq as varchar),
                                 cast(EsEmpaque as varchar), cast(DEsLote as varchar), 
                                 cast(PrecioI1 as varchar),cast(PrecioI2 as varchar),
                                 cast(PrecioI3 as varchar), cast(PrecioIU1 as varchar),
                                 cast(PrecioIU2 as varchar),cast(PrecioIU3 as varchar)
-                                FROM SAPROD ";
+                                FROM SAPROD  ";
             try
             {
                 using (SqlConnection connection = op.GetSQLConnection())
@@ -194,7 +194,7 @@ INNER JOIN SAPROD P ON S.CODITEM=P.CodProd";
 
                         listView.Items.Add(item);
                     }
-
+                    connection.Close();
                     reader.Close();
                 }
             }
