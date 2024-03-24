@@ -77,7 +77,6 @@ namespace Lambda.Controlador
             // Guardar el JSON en un archivo
             // File.WriteAllText(jsonFilePath, json);
 
-            // Crear un cuadro de diálogo para seleccionar la ubicación del archivo ZIP
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Archivos ZIP (*.zip)|*.zip";
             saveFileDialog.Title = "Guardar archivo ZIP";
@@ -101,7 +100,7 @@ namespace Lambda.Controlador
                     }
                 }
 
-                Console.WriteLine("El JSON ha sido comprimido y guardado en el archivo ZIP en la ubicación seleccionada");
+               // Console.WriteLine("El JSON ha sido comprimido y guardado en el archivo ZIP en la ubicación seleccionada");
             }
         }
 
@@ -304,7 +303,7 @@ namespace Lambda.Controlador
                 command.ExecuteNonQuery();
             }
 
-            Console.WriteLine("Los datos del archivo JSON han sido insertados en la tabla de SQL");
+           // Console.WriteLine("Los datos del archivo JSON han sido insertados en la tabla de SQL");
         }
     }
 }
